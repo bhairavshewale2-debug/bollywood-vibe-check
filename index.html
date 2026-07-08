@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Vaishuuu</title>
+<style>
+/* ============================================================
+   MAGICAL PROPOSAL THEME WITH TYPEWRITER EFFECT
+============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@300;400;500&display=swap');
+
+:root {
+  --bg-dark: #05020a;
+  --bg-light: #1c0935;
+  --accent-color: #ff4d79;
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+
+body {
+  background: radial-gradient(circle at 50% 30%, var(--bg-light) 0%, var(--bg-dark) 100%);
+  color: var(--text-main);
+  font-family: 'Quicksand', sans-serif;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* --- Floating Starlight Background --- */
+.star-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+  animation: twinkle linear infinite;
+}
+@keyframes twinkle {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  50% { opacity: 1; transform: translateY(-20px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-40px) scale(0.5); }
+}
+
+/* --- Layout & Scenes --- */
+.stage {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  max-width: 500px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-in-out, transform 1s ease;
+  transform: translateY(20px);
+}
+.scene.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* --- Typography --- */
+h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400; margin-bottom: 15px; line-height: 1.3; }
+h1 i { color: var(--accent-color); }
+p { font-size: 1.1rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 30px; }
+
+/* --- Security PIN Pad --- */
+.pin-display { display: flex; gap: 15px; margin: 20px 0 40px; transition: transform 0.3s; }
+.pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--glass-border); transition: all 0.2s ease; }
+.pin-dot.filled { background: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
+.shake { animation: shake 0.4s; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 280px; }
+.num-btn { 
+  background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; 
+  font-size: 1.5rem; font-family: 'Quicksand', sans-serif; width: 75px; height: 75px; 
+  border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+  cursor: pointer; transition: all 0.2s; 
+}
+.num-btn:active { background: rgba(255,255,255,0.15); transform: scale(0.9); }
+
+/* --- Glowing Heart Surprise --- */
+.heart-container { cursor: pointer; animation: heartbeat 1.5s infinite; margin-bottom: 20px; position: relative; }
+@keyframes heartbeat { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 77, 121, 0.4)); } 50% { transform: scale(1.15); filter: drop-shadow(0 0 30px rgba(255, 77, 121, 0.8)); } }
+.heart-container svg { width: 120px; height: 120px; fill: var(--accent-color); }
+.click-hint { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-color); opacity: 0.8; }
+
+/* Surprise Hearts Explosion */
+.surprise-heart { position: fixed; pointer-events: none; z-index: 10; font-size: 1.8rem; animation: flyHearts 1.5s ease-out forwards; }
+@keyframes flyHearts { 0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(1.2) rotate(var(--rot)); opacity: 0; } }
+
+/* --- The Letter Container (Typewriter specific) --- */
+.letter-box {
+  background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);
+  border-radius: 15px; padding: 30px 25px; text-align: left; max-height: 70vh; overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%;
+}
+.letter-paragraph { 
+  font-size: 1.05rem; 
+  color: var(--text-main); 
+  margin-bottom: 20px; 
+  min-height: 1.5rem; /* Keeps spacing even while empty */
+}
+
+/* --- Buttons --- */
+.btn-group { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 300px; margin: 0 auto; }
+.btn {
+  background: rgba(255, 77, 121, 0.15); border: 1px solid var(--accent-color); color: var(--text-main);
+  font-family: 'Quicksand', sans-serif; font-size: 1.1rem; padding: 15px 30px; border-radius: 50px;
+  cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px); width: 100%;
+}
+.btn:hover { background: var(--accent-color); box-shadow: 0 0 20px rgba(255, 77, 121, 0.5); transform: translateY(-2px); }
+.btn.secondary { background: transparent; border: 1px solid var(--glass-border); color: var(--text-muted); }
+.btn.secondary:hover { background: rgba(255,255,255,0.1); box-shadow: none; color: white; border-color: rgba(255,255,255,0.3); }
+
+/* --- THE GLOWING RING SURPRISE --- */
+.ring-container {
+  font-size: 4rem; margin-bottom: 10px; opacity: 0; transform: scale(0.5);
+  transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.scene.active .ring-container {
+  opacity: 1; transform: scale(1); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9));
+  animation: floatRing 3s ease-in-out infinite 1s; 
+}
+@keyframes floatRing { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.05); } }
+
+/* --- THE BEAUTIFUL PHOTO SURPRISE --- */
+.success-photo {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 3px solid var(--accent-color);
+  box-shadow: 0 10px 25px rgba(255, 77, 121, 0.4);
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s; 
+}
+.scene.active .success-photo {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* --- Falling Flowers Animation --- */
+.flower { position: fixed; top: -10%; z-index: 50; pointer-events: none; animation: fall linear forwards; font-size: 2rem; }
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+/* --- MUSIC UI --- */
+.music-ui-container { position: fixed; top: 15px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 100; pointer-events: none; }
+.now-playing { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); padding: 8px 20px; border-radius: 999px; display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--accent-color); opacity: 0; transform: translateY(-20px); transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.now-playing.visible { opacity: 1; transform: translateY(0); }
+.music-icon { font-size: 1.1rem; animation: spin 4s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.music-toggle-btn { position: fixed; top: 15px; right: 15px; z-index: 200; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; font-size: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); opacity: 0; transform: scale(0.8); pointer-events: none; }
+.music-toggle-btn.visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+.music-toggle-btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.05); }
+.music-toggle-btn:active { transform: scale(0.95); }
+
+</style>
+</head>
+<body>
+
+<!-- MUSIC PLAYER -->
+<audio id="bgMusic" loop>
+  <!-- Keep tum_se_hi.mp3 saved in your folder! -->
+  <source src="tum_se_hi.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MUSIC TOGGLE BUTTON -->
+<button id="musicToggleBtn" class="music-toggle-btn" title="Toggle Music">🔊</button>
+
+<!-- MUSIC UI (Top Center) -->
+<div class="music-ui-container">
+  <div class="now-playing" id="nowPlayingUI">
+    <span class="music-icon">💿</span>
+    <span>Tum Se Hi</span>
+  </div>
+</div>
+
+<div class="star-field" id="stars"></div>
+
+<div class="stage">
+
+  <!-- SCENE 0: The Lock -->
+  <section class="scene active" id="scene-pin">
+    <h1>For <i>Vaishuuu</i> 💖</h1>
+    <p style="font-size: 0.9rem;">Enter the passcode to unlock</p>
+    
+    <div class="pin-display" id="pinDisplay">
+      <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+    </div>
+    
+    <div class="numpad">
+      <div class="num-btn" onclick="enterPin('1')">1</div><div class="num-btn" onclick="enterPin('2')">2</div><div class="num-btn" onclick="enterPin('3')">3</div>
+      <div class="num-btn" onclick="enterPin('4')">4</div><div class="num-btn" onclick="enterPin('5')">5</div><div class="num-btn" onclick="enterPin('6')">6</div>
+      <div class="num-btn" onclick="enterPin('7')">7</div><div class="num-btn" onclick="enterPin('8')">8</div><div class="num-btn" onclick="enterPin('9')">9</div>
+      <div></div><div class="num-btn" onclick="enterPin('0')">0</div><div></div>
+    </div>
+  </section>
+
+  <!-- SCENE 1: The Surprise Heart -->
+  <section class="scene" id="scene-surprise">
+    <div class="heart-container" id="heartBtn">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    <div class="click-hint">Tap to open</div>
+  </section>
+
+  <!-- SCENE 2: The Letter (TYPEWRITER HTML) -->
+  <section class="scene" id="scene-letter">
+    <div class="letter-box" id="letterBox">
+      <!-- We store the text in data-text to type it out in javascript -->
+      <div class="letter-paragraph" style="font-size: 1.2rem; font-weight: 500; color: var(--accent-color);" data-text="Dear Vaishuuu,"></div>
+      
+      <div class="letter-paragraph" data-text="I genuinely like you. I’ve been wanting to tell you this for a long time."></div>
+      <div class="letter-paragraph" data-text="When we were in first year, I started developing feelings for you. But you once told me that you didn’t like bringing a relationship into a friendship, so I respected that and kept my feelings to myself."></div>
+      <div class="letter-paragraph" data-text="Lately, whenever I see another guy getting close to you, talking to you, or being physically affectionate with you, I feel jealous. I know I don’t have any right to feel that way, but I can’t ignore these feelings anymore. Keeping everything inside has become really difficult."></div>
+      <div class="letter-paragraph" data-text="I’m sorry if this surprises you or makes things awkward. I honestly don’t know what your answer will be or how this might affect our friendship, and that scares me. But I felt it was better to be honest than to keep hiding my feelings."></div>
+      <div class="letter-paragraph" style="color: var(--accent-color); font-weight: 500;" data-text="I love you."></div>
+      <div class="letter-paragraph" data-text="I’m not expecting you to feel the same way, and I’ll respect whatever decision you make. I just wanted you to know how I truly feel."></div>
+      
+      <!-- The button is hidden until typing is finished -->
+      <div id="continueBtnWrap" style="text-align: center; margin-top: 30px; opacity: 0; transition: opacity 1s;">
+        <button class="btn" onclick="nextScene('scene-question')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 3: The Question (Yes / No) -->
+  <section class="scene" id="scene-question">
+    <h1>So... <br><i>what do you think?</i></h1>
+    <p>Take your time.</p>
+    
+    <div class="btn-group">
+      <button class="btn" onclick="acceptProposal()">I feel the same way ❤️</button>
+      <button class="btn secondary" onclick="declineProposal()">Let's just be friends</button>
+    </div>
+  </section>
+
+  <!-- SCENE 4: ACCEPTED (Ring, Photo & Flowers!) -->
+  <section class="scene" id="scene-yes">
+    <div class="ring-container">💍</div>
+    <h1 style="font-size: 2.2rem; margin-bottom: 5px;"><i>You just made me<br>the happiest person.</i></h1>
+    
+    <!-- YOUR BEAUTIFUL IMAGE GOES HERE! -->
+    <!-- Make sure to have a photo named "us.jpg" in the same folder -->
+    <img src="us.jpg" alt="Us" class="success-photo">
+  </section>
+
+  <!-- SCENE 5: DECLINED (Yellow Friendship Heart) -->
+  <section class="scene" id="scene-no">
+    <h1 style="font-size: 3.5rem; margin-bottom: 0;">💛</h1>
+    <h1><i>I completely understand.</i></h1>
+    <p style="max-width: 90%; margin: 0 auto;">Thank you for your honesty. Our friendship means the world to me, and I promise nothing changes between us.</p>
+  </section>
+
+</div>
+
+<script>
+// CONFIGURATION
+const CORRECT_PIN = "0707"; // CHANGE THIS TO WHATEVER 4 DIGIT PIN YOU WANT
+
+// 1. Generate Glowing Stars
+const starField = document.getElementById('stars');
+for (let i = 0; i < 40; i++) {
+  const star = document.createElement('div');
+  star.className = 'star';
+  const size = Math.random() * 3 + 1;
+  star.style.width = size + 'px';
+  star.style.height = size + 'px';
+  star.style.left = Math.random() * 100 + 'vw';
+  star.style.top = Math.random() * 100 + 'vh';
+  star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+  star.style.animationDelay = (Math.random() * 2) + 's';
+  starField.appendChild(star);
+}
+
+// 2. Music Toggle Logic
+const bgMusic = document.getElementById('bgMusic');
+const musicToggleBtn = document.getElementById('musicToggleBtn');
+const nowPlayingUI = document.getElementById('nowPlayingUI');
+
+musicToggleBtn.addEventListener('click', () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    musicToggleBtn.textContent = '🔊';
+  } else {
+    bgMusic.pause();
+    musicToggleBtn.textContent = '🔇';
+  }
+});
+
+// 3. PIN Pad Logic
+let enteredPin = "";
+const dots = document.querySelectorAll('.pin-dot');
+
+function enterPin(digit) {
+  if(enteredPin.length < 4) {
+    enteredPin += digit;
+    dots[enteredPin.length - 1].classList.add('filled');
+    
+    if(enteredPin.length === 4) {
+      if(enteredPin === CORRECT_PIN) {
+        
+        // MUSIC & UI STARTS HERE
+        bgMusic.play().then(() => {
+          musicToggleBtn.classList.add('visible');
+          nowPlayingUI.classList.add('visible');
+        }).catch(err => console.log("Audio blocked by browser."));
+        
+        setTimeout(() => nextScene('scene-surprise'), 500);
+      } else {
+        const pinDisplay = document.getElementById('pinDisplay');
+        pinDisplay.classList.add('shake');
+        setTimeout(() => {
+          pinDisplay.classList.remove('shake');
+          enteredPin = "";
+          dots.forEach(d => d.classList.remove('filled'));
+        }, 500);
+      }
+    }
+  }
+}
+
+// 4. Heart Surprise
+const heartBtn = document.getElementById('heartBtn');
+heartBtn.addEventListener('click', (e) => {
+  
+  const rect = heartBtn.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  const heartsArr = ['❤️', '💖', '💕', '💗', '💓'];
+
+  for(let i=0; i<35; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'surprise-heart';
+    heart.textContent = heartsArr[Math.floor(Math.random() * heartsArr.length)];
+    
+    heart.style.left = (centerX - 15) + 'px';
+    heart.style.top = (centerY - 15) + 'px';
+    
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 150 + 60;
+    heart.style.setProperty('--x', Math.cos(angle) * distance + 'px');
+    heart.style.setProperty('--y', Math.sin(angle) * distance + 'px');
+    
+    heart.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
+    
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1500);
+  }
+
+  heartBtn.style.opacity = 0;
+  
+  setTimeout(() => {
+    nextScene('scene-letter');
+    // Start the typewriter effect
+    setTimeout(typewriterEffect, 800);
+  }, 600);
+});
+
+// 5. Navigation & NEW TYPEWRITER EFFECT
+function nextScene(sceneId) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById(sceneId).classList.add('active');
+}
+
+async function typewriterEffect() {
+  const paragraphs = document.querySelectorAll('.letter-paragraph');
+  const box = document.getElementById('letterBox');
+  
+  for (let i = 0; i < paragraphs.length; i++) {
+    let p = paragraphs[i];
+    let text = p.getAttribute('data-text');
+    
+    // Type out each letter one by one
+    for (let j = 0; j < text.length; j++) {
+      p.textContent += text.charAt(j);
+      
+      // Auto-scroll the box so she can always see the newest letters
+      box.scrollTop = box.scrollHeight;
+      
+      // The speed of the typing (30 milliseconds per letter)
+      await new Promise(resolve => setTimeout(resolve, 30)); 
+    }
+    
+    // Pause for a moment before starting the next line (600 milliseconds)
+    await new Promise(resolve => setTimeout(resolve, 600)); 
+  }
+  
+  // Fade in the Continue button after the entire letter is finished typing
+  document.getElementById('continueBtnWrap').style.opacity = 1;
+}
+
+// 6. Final Answer Logic & Flowers
+function acceptProposal() {
+  nextScene('scene-yes');
+  
+  const emojis = ['🌸', '🌹', '🌻', '🌺', '🌷', '💖'];
+  for(let i=0; i<50; i++) {
+    const f = document.createElement('div');
+    f.className = 'flower';
+    f.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    f.style.left = Math.random() * 100 + 'vw';
+    f.style.animationDuration = (3 + Math.random() * 4) + 's';
+    f.style.animationDelay = (Math.random() * 2) + 's';
+    document.body.appendChild(f);
+  }
+}
+
+function declineProposal() {
+  nextScene('scene-no');
+}
+</script>
+</body>
+</html>
